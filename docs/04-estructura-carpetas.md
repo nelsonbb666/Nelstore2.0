@@ -43,22 +43,28 @@ nelstore/
 │
 ├── js/
 │   ├── app.js                      # bootstrap: inyecta componentes, init global, helpers (fetch JSON cacheado, formato COP, normalizador de texto)
-│   ├── catalog.js                  # capa de datos: getProducts/getByCategory/search (sin tildes/mayúsculas)/getOffers/relacionados
+│   ├── whatsapp.js                 # 🔴 S2: motor único wa.me — buildWaLink/mensajes prellenados/buy-box/sticky CTA/track() (docs/07)
+│   ├── catalog.js                  # capa de datos: getProducts/getByCategory/search (sin tildes/mayúsculas)/getOffers/relacionados/bySlug
+│   ├── meta.js                     # 🔴 S2: title/og:/canonical/schema.org dinámicos de la ficha
 │   ├── search.js                   # C4 autocompletado del buscador
 │   ├── filters.js                  # C9 filtros + orden + estado en querystring
 │   ├── grid.js                     # C6/C18 render de cuadrícula + "ver más"
+│   ├── variants.js                 # 🔴 S2: chips de variantes → re-render del CTA con variante en el mensaje
 │   ├── pages/
 │   │   ├── home.js                 # banner, secciones (destacados/más vendidos/nuevos/ofertas)
 │   │   ├── category.js             # plantilla categoría (reutilizada por ofertas y búsqueda)
-│   │   ├── product.js              # ficha: galería, tabs, INVIMA condicional, mensaje WA prellenado, relacionados
+│   │   ├── product.js              # ficha: galería, tabs, INVIMA condicional, mensaje WA prellenado, relacionados (docs/09)
 │   │   └── offers.js               # wrapper de category.js + contador regresivo opcional
 │   └── components/
-│       ├── product-card.js         # C6
+│       ├── product-card.js         # C6 · secundaria "Ver producto" (la compra NO arranca aquí)
 │       ├── breadcrumbs.js          # C8
-│       ├── gallery.js              # C11
+│       ├── gallery.js              # C11 zoom + miniaturas lazy
+│       ├── video-lazy.js           # 🔴 S2: poster → play asigna src (preload none)
 │       ├── carousel.js             # C12
-│       ├── tabs.js                 # C10
+│       ├── tabs.js                 # C10 (pestañas desktop / acordeón móvil)
 │       ├── star-rating.js          # C13
+│       ├── sticky-cta.js           # 🔴 S2: barra fija inferior móvil en fichas
+│       ├── trust-block.js          # 🔴 S2: confianza estandarizada desde site.json (ficha + footer)
 │       └── faq.js                  # C15
 │
 ├── assets/
@@ -67,6 +73,7 @@ nelstore/
 │   │   ├── icons/                  # SVG inline refs: confianza, categorías, UI
 │   │   ├── banners/                # webp optimizado, altura fija (avita CLS)
 │   │   └── productos/              # [sku]-1.webp ... imágenes 1:1 comprimidas (≤60 KB) + placeholder.svg
+│   ├── video/                      # 🔴 S2 mp4 de "en uso" ≤15 s, <2 MB, poster webp (lazy al play)
 │   └── fonts/                      # woff2 subsets (opcional; fallback sistema)
 │
 ├── docs/                           # este entregable de estructura
@@ -91,3 +98,19 @@ nelstore/
 | Búsqueda y ofertas = variantes de la plantilla de categoría | Una sola cuadrícula/filtro implementado (`category.js`), menos código y UX idéntica. |
 | Imágenes `.webp` con fallback `.jpg`, `loading="lazy"` | Carga rápida en móviles de gama media (mercado objetivo CO). |
 | Estado de filtros en querystring | Resultados compartibles por WhatsApp y mejor indexación. |
+
+
+---
+
+## Actualización Sprint 2 — módulos nuevos y por qué
+
+| Módulo | Regla del sprint que cubre |
+|---|---|
+| `js/whatsapp.js` | Fuente única de enlaces wa.me, mensaje prellenado con sku+precio+enlace+variante, estados disponible/agotado, medición (docs/07) |
+| `js/variants.js` + `components/sticky-cta.js` | Variante reflejada en el mensaje + CTA siempre visible en celular |
+| `components/video-lazy.js` | Video en uso con carga diferida real (`preload="none"`) |
+| `components/trust-block.js` | Bloque de confianza idéntico en fichas/footer desde `site.json` (historia 2.6) |
+| `js/meta.js` | SEO dinámico por ficha (title/og/canonical) para pauta en redes |
+| `assets/video/` | Archivos ligeros de video por producto |
+
+**No cambió nada de la estructura de Etapa 1**: no hay carrito, checkout ni cuentas; la plantilla de ficha y la de categoría siguen siendo únicas.
