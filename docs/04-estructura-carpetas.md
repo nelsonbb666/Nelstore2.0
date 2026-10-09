@@ -81,7 +81,12 @@ nelstore/
 │   ├── 02-wireframes.md
 │   ├── 03-componentes.md
 │   ├── 04-estructura-carpetas.md
-│   └── 05-esquema-products-json.md
+│   ├── 05-esquema-products-json.md      # v1 (histórico)
+│   ├── 06-flujo-usuario.md              # 🔴 S2: diagrama llegada → WhatsApp
+│   ├── 07-whatsapp-link-function.md     # 🔴 S2: js/whatsapp.js completo
+│   ├── 08-eventos-medicion.md           # 🔴 S2: eventos GA4/Pixel + UTM
+│   ├── 09-plantilla-ficha-producto.md   # 🔴 S2: ficha HTML/CSS/JS
+│   └── 10-products-json-v2-sprint2.md   # 🔴 S2: esquema v2.0 (variantes, video, registroSanitario)
 │
 ├── .htaccess                       # (si se hospeda en Apache) rewrites /producto/slug, cache, gzip
 ├── sitemap.xml / robots.txt        # SEO
